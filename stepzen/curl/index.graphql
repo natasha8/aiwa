@@ -32,7 +32,6 @@ type DailyUnits {
 }
 type Hourly {
   apparent_temperature: [Float]
-  is_day: [Int]
   precipitation: [Float]
   precipitation_probability: [Int]
   rain: [Float]
@@ -48,7 +47,6 @@ type Hourly {
 }
 type HourlyUnits {
   apparent_temperature: String
-  is_day: String
   precipitation: String
   precipitation_probability: String
   rain: String
