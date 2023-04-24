@@ -4,7 +4,7 @@ import { Country, City } from "country-state-city";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Select from "react-select";
-import { GlobeIcon } from "@heroicons/react/solid";
+import { GlobeAltIcon } from "@heroicons/react/solid";
 
 type option = {
 	value: {
@@ -56,7 +56,7 @@ function CityPicker() {
 		<div className="space-y-4">
 			<div className="space-y-2">
 				<div className="flex items-center space-x-2 text-white/80">
-					<GlobeIcon className="h-5 w-5 text-white" />
+					<GlobeAltIcon className="h-5 w-5 text-white" />
 					<label htmlFor="country">Country</label>
 				</div>
 				<Select
@@ -70,7 +70,7 @@ function CityPicker() {
 			{selectedCountry && (
 				<div className="space-y-2">
 					<div className="flex items-center space-x-2 text-white/80">
-						<GlobeIcon className="h-5 w-5 text-white" />
+						<GlobeAltIcon className="h-5 w-5 text-white" />
 						<label htmlFor="country">City</label>
 					</div>
 					<Select

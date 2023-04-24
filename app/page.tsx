@@ -7,7 +7,7 @@ export default function Home() {
 	return (
 		<main className="w-screen h-screen bg-clouds flex flex-col justify-center items-center text-6xl">
 			<Card className="max-w-4xl mx-auto font-extrabold tracking-widest text-center">
-				<Title className="text-8xl font-bold text-center mb-4 text-">
+				<Title className="text-8xl font-bold text-center mb-4 text-[#294572]">
 					AIWA
 				</Title>
 				<Text className="text-3xl">your AI Weather Checker</Text>
