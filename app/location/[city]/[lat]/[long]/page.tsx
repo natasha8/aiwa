@@ -1,7 +1,12 @@
 import { getClient } from "@/apollo-client";
 import CalloutCard from "@/components/CalloutCard";
+import HumidityCharts from "@/components/HumidityCharts";
+import InfoPanel from "@/components/InfoPanel";
+import RainCharts from "@/components/RainCharts";
 import StatusCard from "@/components/StatusCard";
+import TempCharts from "@/components/TempCharts";
 import fetchWeather from "@/graphql/queries/fetchWeather";
+import { Divider } from "@tremor/react";
 
 type Props = {
 	params: {
@@ -29,6 +34,7 @@ async function HomePage({ params: { city, lat, long } }: Props) {
 
 	return (
 		<div className="flex flex-col min-h-screen md:flex-row bg-clouds tracking-wider">
+			<InfoPanel city={city} long={long} lat={lat} results={results} />
 			<div className="flex-1 p-5 lg:p-10">
 				<div className="p-5">
 					<div className="pb-5">
@@ -46,19 +52,19 @@ async function HomePage({ params: { city, lat, long } }: Props) {
 					</div>
 					<div className="grid grid-cols-1 xl:grid-cols-2 gap-5 m-2">
 						<StatusCard
-							title="Maximum Temperature"
+							title="Max Temperature"
 							metric={`${results.daily.temperature_2m_max[0].toFixed(
 								1
 							)}°`}
-							color="yellow"
+							color="red"
 						/>
 
 						<StatusCard
-							title="Minimum Temperature"
+							title="Min Temperature"
 							metric={`${results.daily.temperature_2m_min[0].toFixed(
 								1
 							)}°`}
-							color="green"
+							color="teal"
 						/>
 
 						<div>
@@ -67,7 +73,7 @@ async function HomePage({ params: { city, lat, long } }: Props) {
 								metric={results.daily.uv_index_max[0].toFixed(
 									1
 								)}
-								color="rose"
+								color="yellow"
 							/>
 							{Number(results.daily.uv_index_max[0].toFixed(1)) >
 								5 && (
@@ -98,6 +104,12 @@ async function HomePage({ params: { city, lat, long } }: Props) {
 							/>
 						</div>
 					</div>
+				</div>
+				<Divider className="w-11/12" />
+				<div className="space-y-3 px-4">
+					<TempCharts results={results} />
+					<RainCharts results={results} />
+					<HumidityCharts results={results} />
 				</div>
 			</div>
 		</div>
