@@ -6,7 +6,11 @@ import RainCharts from "@/components/RainCharts";
 import StatusCard from "@/components/StatusCard";
 import TempCharts from "@/components/TempCharts";
 import fetchWeather from "@/graphql/queries/fetchWeather";
+import cleanData from "@/lib/cleanData";
+import getBasePath from "@/lib/getBasePath";
 import { Divider } from "@tremor/react";
+
+export const revalidate = 60;
 
 type Props = {
 	params: {
@@ -18,6 +22,7 @@ type Props = {
 
 async function HomePage({ params: { city, lat, long } }: Props) {
 	const client = getClient();
+
 	const { data } = await client.query({
 		query: fetchWeather,
 		variables: {
@@ -30,15 +35,33 @@ async function HomePage({ params: { city, lat, long } }: Props) {
 
 	const results: Root = data.myQuery;
 
-	console.log(results);
+	const dataToSend = cleanData(results, city);
+	//console.log("TOSEND:", dataToSend);
+
+	const res = await fetch(`${getBasePath()}/api/getSummary`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({
+			weatherData: dataToSend,
+		}),
+	});
+	if (!res.ok) {
+		console.error(`HTTP error ${res.status}`);
+	}
+
+	const GPTdata = await res.json();
+
+	const { content } = GPTdata;
 
 	return (
-		<div className="flex flex-col min-h-screen md:flex-row bg-clouds tracking-wider">
+		<div className="flex flex-col min-h-screen xl:flex-row bg-clouds tracking-wider">
 			<InfoPanel city={city} long={long} lat={lat} results={results} />
 			<div className="flex-1 p-5 lg:p-10">
 				<div className="p-5">
 					<div className="pb-5">
-						<h2 className="text-xl font-bold">Todays Overview</h2>
+						<h2 className="text-3xl font-bold">Todays Overview</h2>
 						<p className="text-sm text-gray-400">
 							Last Updated at:{" "}
 							{new Date(
@@ -48,7 +71,7 @@ async function HomePage({ params: { city, lat, long } }: Props) {
 						</p>
 					</div>
 					<div className="m-2">
-						<CalloutCard message="content from chat GPT-4" />
+						<CalloutCard message={content} />
 					</div>
 					<div className="grid grid-cols-1 xl:grid-cols-2 gap-5 m-2">
 						<StatusCard
