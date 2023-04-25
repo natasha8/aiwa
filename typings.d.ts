@@ -79,3 +79,17 @@ interface Root {
 	timezone_abbreviation: string;
 	utc_offset_seconds: number;
 }
+
+interface Timezone {
+	sunrise: string;
+	lng: number;
+	countryCode: string;
+	gmtOffset: number;
+	rawOffset: number;
+	sunset: string;
+	timezoneId: string;
+	dstOffset: number;
+	countryName: string;
+	time: string;
+	lat: number;
+}
